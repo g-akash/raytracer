@@ -1,0 +1,26 @@
+I have implemented the following points:
+
+Please note that after doing make please copy the trace into the data folder and then run the commands from there.
+
+a) Triangles: I have implemented the triangle class(without smoothing). I just needed to complete the function whose specification was already provided along with the skeleton. I have managed to render the teapot and the dunkit scenes. This just required triangle to be modified and within it just two functions of calculating normals and getting intersection.
+
+I rendered the dunkit and the teapot using the triangles. The dunkit took around 1m3sec to run
+./trace dunkit.scd ../images/dunkit.png 2 1 1 1
+
+The teapot took around 7m to render the teapot.
+./trace teapot.scd ../images/teapot.png 2 1 1 1
+
+
+b) Area light: I have implemented the area lights. I used diff=0.6 and length breath and height is given along with commandline. Its actually a volume light. The logic is simple. Instead of using the simple function of calculating shadow rays I modified and divided the volume of light into tiny fragments and within each fragment I am choosing a random position and getting a shadow ray from the position. and then doing the smae thing as earlier. Later on I am dividing the color by the total number of fragments.
+
+For testing area light I used the scene 5 from 3.a The following is the command I ran. It takes about 1m16 seconds to run this command on my machine. I am using 9 fragments.
+./trace Area.scd ../images/Area.png 2
+
+
+c) Refraction: This is simple to implement. We just have to calculate the refracted ray and get the color using the refracted ray and then attenuate it. The MT is refracted attenuation and MTN is the refractivity. Also MS+MT=1 is the the equation I am using. Since I am doing refractivity only from spheres So I needed to identify whether some particular primitive is sphere or not. So there is a special function getshape() which returns the shape. Each material stores the refractivity and I am assuming the ray does not goes directly from one sphere to another. So for getting refracted ray I just need to know whether the origin is inside the sphere or not which  can get us the eta1 and eta2 and thus the refracted ray.
+
+The follwing two commands will give the refraction effect. One is with eta=1 so basically transparent and other is with eta=2 which refraction effect. It takes approximately 4 secs on my machine for each command.
+./trace refraction1.scd ../images/refraction1.png 2 1 1 1
+./trace refraction2.scd ../images/refraction2.png 2 1 1 1
+
+For these the central glass sphere is mostly glass with very low reflecitvity and mostly refractivity thats why you get clear glass.
